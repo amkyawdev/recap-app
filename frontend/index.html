@@ -9,16 +9,19 @@
 </head>
 <body>
     <header class="app-header">
-        <div class="logo">
-            <span class="logo-icon">🎬</span>
-            <h1>Burme Transcript</h1>
+        <div class="header-left">
+            <button class="menu-btn" id="menu-btn" title="Menu">☰</button>
+            <div class="logo">
+                <span class="logo-icon">🎬</span>
+                <h1>Burme Transcript</h1>
+            </div>
         </div>
         <div class="header-actions">
-            <button id="about-btn" class="btn-icon" title="About">ℹ️</button>
-            <button id="theme-toggle" class="btn-icon" title="Toggle Theme">🌙</button>
-            <button id="logout-btn" class="btn-icon" title="Logout">🚪</button>
+            <button id="about-btn" class="btn-icon btn-sm-icon" title="About">ℹ️</button>
+            <button id="theme-toggle" class="btn-icon btn-sm-icon" title="Toggle Theme">🌙</button>
+            <button id="logout-btn" class="btn-icon btn-sm-icon" title="Logout">🚪</button>
             <div class="export-dropdown">
-                <button id="export-btn" class="btn-primary">Export ▼</button>
+                <button id="export-btn" class="btn-primary btn-sm">Export ▼</button>
                 <div class="export-menu" id="export-menu">
                     <a href="#" id="export-srt">📄 Export as SRT</a>
                     <a href="#" id="export-json">📋 Export as JSON</a>
@@ -27,6 +30,13 @@
             </div>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#" id="menu-about">ℹ️ About</a>
+        <a href="#" id="menu-theme">🌙 Theme</a>
+        <a href="#" id="menu-logout">🚪 Logout</a>
+    </div>
 
     <!-- About Modal -->
     <div class="modal" id="about-modal">
@@ -165,18 +175,34 @@
                     <div class="timecode-inputs">
                         <div class="timecode-group">
                             <label>Start</label>
-                            <input type="text" id="start-time" class="timecode" placeholder="00:00:00,000">
+                            <div class="timecode-control">
+                                <button class="time-btn" onclick="adjustTime('start-time', -1000)">-</button>
+                                <input type="text" id="start-time" class="timecode" placeholder="00:00:00,000">
+                                <button class="time-btn" onclick="adjustTime('start-time', 1000)">+</button>
+                            </div>
+                            <div class="time-adjust-btns">
+                                <button class="tiny-btn" onclick="adjustTime('start-time', -100)">-100ms</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', 100)">+100ms</button>
+                            </div>
                         </div>
                         <div class="timecode-group">
                             <label>End</label>
-                            <input type="text" id="end-time" class="timecode" placeholder="00:00:00,000">
+                            <div class="timecode-control">
+                                <button class="time-btn" onclick="adjustTime('end-time', -1000)">-</button>
+                                <input type="text" id="end-time" class="timecode" placeholder="00:00:00,000">
+                                <button class="time-btn" onclick="adjustTime('end-time', 1000)">+</button>
+                            </div>
+                            <div class="time-adjust-btns">
+                                <button class="tiny-btn" onclick="adjustTime('end-time', -100)">-100ms</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', 100)">+100ms</button>
+                            </div>
                         </div>
                     </div>
                     <textarea id="subtitle-text" placeholder="Enter subtitle text..."></textarea>
                     <div class="subtitle-actions">
-                        <button id="save-subtitle-btn" class="btn-primary">Save</button>
-                        <button id="split-subtitle-btn" class="btn-secondary">Split</button>
-                        <button id="merge-subtitle-btn" class="btn-secondary">Merge</button>
+                        <button id="save-subtitle-btn" class="btn-primary btn-sm">Save</button>
+                        <button id="split-subtitle-btn" class="btn-secondary btn-sm">Split</button>
+                        <button id="merge-subtitle-btn" class="btn-secondary btn-sm">Merge</button>
                     </div>
                 </div>
 

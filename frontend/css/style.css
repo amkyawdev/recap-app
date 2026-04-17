@@ -1085,3 +1085,143 @@ body {
 .export-menu a:last-child {
     border-radius: 0 0 var(--radius) var(--radius);
 }
+
+/* Timecode Controls */
+.timecode-control {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.timecode-control .timecode {
+    flex: 1;
+    text-align: center;
+}
+
+.time-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.time-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.time-adjust-btns {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.tiny-btn {
+    flex: 1;
+    padding: 4px 8px;
+    font-size: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.tiny-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Small buttons */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-sm-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+}
+
+/* Hamburger Menu */
+.menu-btn {
+    display: none;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 999;
+    padding: 12px;
+}
+
+.mobile-menu.show {
+    display: flex;
+    gap: 8px;
+}
+
+.mobile-menu a {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.mobile-menu a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .app-header .logo h1 {
+        font-size: 16px;
+    }
+    
+    .app-header .logo-icon {
+        font-size: 20px;
+    }
+}

@@ -22,6 +22,7 @@ const App = (function() {
         initTheme();
         initAboutModal();
         initLogout();
+        initMobileMenu();
         initSubtitleStyle();
         initExportDropdown();
         initVideoPlayer();
@@ -133,6 +134,52 @@ const App = (function() {
                 }
             });
         }
+        
+        // Mobile menu logout
+        const menuLogout = document.getElementById('menu-logout');
+        if (menuLogout) {
+            menuLogout.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    await FirebaseAuth.logout();
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    }
+
+    /**
+     * Initialize Mobile Menu
+     */
+    function initMobileMenu() {
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+            });
+            
+            // Menu items
+            const menuAbout = document.getElementById('menu-about');
+            const menuTheme = document.getElementById('menu-theme');
+            
+            if (menuAbout) {
+                menuAbout.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('about-modal').classList.add('show');
+                    mobileMenu.classList.remove('show');
+                });
+            }
+            
+            if (menuTheme) {
+                menuTheme.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('theme-toggle').click();
+                    mobileMenu.classList.remove('show');
+                });
+            }
+        }
     }
 
     /**
@@ -195,6 +242,42 @@ const App = (function() {
         const b = parseInt(hex.slice(5, 7), 16);
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
+
+    /**
+     * Adjust timecode by milliseconds
+     */
+    function adjustTime(inputId, delta) {
+        const input = document.getElementById(inputId);
+        if (!input || !input.value) return;
+        
+        // Parse current time
+        const parts = input.value.replace(',', '.').split(':');
+        if (parts.length !== 3) return;
+        
+        let hours = parseInt(parts[0]) || 0;
+        let minutes = parseInt(parts[1]) || 0;
+        let seconds = parseFloat(parts[2]) || 0;
+        
+        // Convert to milliseconds
+        let totalMs = (hours * 3600 + minutes * 60 + seconds) * 1000 + delta;
+        
+        // Prevent negative time
+        if (totalMs < 0) totalMs = 0;
+        
+        // Convert back to timecode
+        hours = Math.floor(totalMs / 3600000);
+        totalMs %= 3600000;
+        minutes = Math.floor(totalMs / 60000);
+        totalMs %= 60000;
+        seconds = Math.floor(totalMs / 1000);
+        const ms = totalMs % 1000;
+        
+        // Format: HH:MM:SS,mmm
+        input.value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')},${String(ms).padStart(3, '0')}`;
+    }
+
+    // Make adjustTime available globally
+    window.adjustTime = adjustTime;
 
     /**
      * Initialize video player

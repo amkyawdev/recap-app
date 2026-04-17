@@ -6,58 +6,99 @@
     <title>Login - Burme Transcript</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .auth-page {
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a3a3a3;
+            --text-muted: #737373;
+            --border-color: #404040;
+            --danger: #ef4444;
+            --accent: #10b981;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--bg-primary);
             padding: 20px;
         }
 
         .auth-container {
             background: var(--bg-secondary);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 40px;
             width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-lg);
+            max-width: 380px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .auth-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
-        .auth-logo span {
-            font-size: 48px;
+        .auth-logo .logo-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 12px;
         }
 
         .auth-logo h1 {
-            font-size: 24px;
-            margin-top: 10px;
+            font-size: 22px;
+            font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
 
         .auth-tabs {
             display: flex;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 28px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 4px;
         }
 
         .auth-tab {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
             color: var(--text-secondary);
-            border-bottom: 2px solid transparent;
-            transition: all var(--transition);
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
         .auth-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            background: var(--primary);
+            color: white;
         }
 
         .auth-form {
@@ -69,49 +110,92 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
             color: var(--text-secondary);
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 12px 14px;
             font-size: 14px;
             background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius);
+            border-radius: 10px;
             color: var(--text-primary);
-            transition: border-color var(--transition);
+            transition: all 0.2s;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
 
         .form-group input::placeholder {
             color: var(--text-muted);
         }
 
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input {
+            padding-right: 44px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+            background: none;
+            border: none;
+        }
+
         .btn-auth {
             width: 100%;
             padding: 14px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-top: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-auth:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-auth:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-google {
-            background: #fff;
+            background: white;
             color: #333;
             border: 1px solid #ddd;
-            margin-top: 15px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn-google:hover {
@@ -119,29 +203,42 @@
         }
 
         .btn-google img {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            vertical-align: middle;
+            width: 18px;
+            height: 18px;
         }
 
         .auth-divider {
             text-align: center;
             margin: 20px 0;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
+            position: relative;
         }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .auth-divider::before { left: 0; }
+        .auth-divider::after { right: 0; }
 
         .auth-link {
             text-align: center;
             margin-top: 20px;
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .auth-link a {
             color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
         }
 
         .auth-link a:hover {
@@ -149,10 +246,10 @@
         }
 
         .auth-message {
-            padding: 12px 16px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 13px;
             display: none;
         }
 
@@ -161,155 +258,138 @@
         }
 
         .auth-message.success {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.15);
             border: 1px solid var(--accent);
             color: var(--accent);
         }
 
         .auth-message.error {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.15);
             border: 1px solid var(--danger);
             color: var(--danger);
         }
 
-        .password-toggle {
-            position: relative;
+        .back-home {
+            text-align: center;
+            margin-top: 24px;
         }
 
-        .password-toggle input {
-            padding-right: 40px;
-        }
-
-        .toggle-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
+        .back-home a {
             color: var(--text-muted);
-            font-size: 18px;
+            text-decoration: none;
+            font-size: 13px;
         }
 
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1s infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
+        .back-home a:hover {
+            color: var(--text-primary);
         }
     </style>
 </head>
 <body>
-    <div class="auth-page">
-        <div class="auth-container">
-            <div class="auth-logo">
-                <span>🎬</span>
-                <h1>Burme Transcript</h1>
+    <div class="auth-container">
+        <div class="auth-logo">
+            <span class="logo-icon">🎬</span>
+            <h1>Burme Transcript</h1>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Login</button>
+            <button class="auth-tab" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+            <div id="login-message" class="auth-message"></div>
+            
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="Enter your email" required>
             </div>
 
-            <div class="auth-tabs">
-                <div class="auth-tab active" data-tab="login">Login</div>
-                <div class="auth-tab" data-tab="register">Register</div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <div class="password-input">
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('login-password')">👁</button>
+                </div>
             </div>
 
-            <!-- Login Form -->
-            <form id="login-form" class="auth-form active">
-                <div id="login-message" class="auth-message"></div>
-                
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" placeholder="Enter your email" required>
+            <button type="submit" class="btn-auth" id="login-btn">Login</button>
+
+            <div class="auth-link">
+                <a href="#" id="forgot-password-link">Forgot Password?</a>
+            </div>
+
+            <div class="auth-divider">or</div>
+
+            <button type="button" class="btn-auth btn-google" onclick="loginWithGoogle()">
+                <img src="https://www.google.com/favicon.ico" alt="Google">
+                Continue with Google
+            </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form">
+            <div id="register-message" class="auth-message"></div>
+            
+            <div class="form-group">
+                <label for="register-name">Full Name</label>
+                <input type="text" id="register-name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <div class="password-input">
+                    <input type="password" id="register-password" placeholder="Create a password" required minlength="6">
+                    <button type="button" class="toggle-password" onclick="togglePassword('register-password')">👁</button>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <div class="password-toggle">
-                        <input type="password" id="login-password" placeholder="Enter your password" required>
-                        <span class="toggle-icon" onclick="togglePassword('login-password')">👁</span>
-                    </div>
+            <div class="form-group">
+                <label for="register-confirm">Confirm Password</label>
+                <div class="password-input">
+                    <input type="password" id="register-confirm" placeholder="Confirm your password" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('register-confirm')">👁</button>
                 </div>
+            </div>
 
-                <button type="submit" class="btn-primary btn-auth" id="login-btn">Login</button>
+            <button type="submit" class="btn-auth" id="register-btn">Create Account</button>
 
-                <div class="auth-link">
-                    <a href="#" id="forgot-password-link">Forgot Password?</a>
-                </div>
+            <div class="auth-divider">or</div>
 
-                <div class="auth-divider">or</div>
+            <button type="button" class="btn-auth btn-google" onclick="loginWithGoogle()">
+                <img src="https://www.google.com/favicon.ico" alt="Google">
+                Continue with Google
+            </button>
+        </form>
 
-                <button type="button" class="btn-auth btn-google" onclick="loginWithGoogle()">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
-                    Continue with Google
-                </button>
-            </form>
+        <!-- Reset Password Form -->
+        <form id="reset-form" class="auth-form">
+            <div id="reset-message" class="auth-message"></div>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 13px; text-align: center;">
+                Enter your email and we'll send you a link to reset your password.
+            </p>
 
-            <!-- Register Form -->
-            <form id="register-form" class="auth-form">
-                <div id="register-message" class="auth-message"></div>
-                
-                <div class="form-group">
-                    <label for="register-name">Full Name</label>
-                    <input type="text" id="register-name" placeholder="Enter your name" required>
-                </div>
+            <div class="form-group">
+                <label for="reset-email">Email</label>
+                <input type="email" id="reset-email" placeholder="Enter your email" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" placeholder="Enter your email" required>
-                </div>
+            <button type="submit" class="btn-auth" id="reset-btn">Send Reset Link</button>
 
-                <div class="form-group">
-                    <label for="register-password">Password</label>
-                    <div class="password-toggle">
-                        <input type="password" id="register-password" placeholder="Create a password" required minlength="6">
-                        <span class="toggle-icon" onclick="togglePassword('register-password')">👁</span>
-                    </div>
-                </div>
+            <div class="auth-link">
+                <a href="#" onclick="showTab('login')">← Back to Login</a>
+            </div>
+        </form>
 
-                <div class="form-group">
-                    <label for="register-confirm">Confirm Password</label>
-                    <div class="password-toggle">
-                        <input type="password" id="register-confirm" placeholder="Confirm your password" required>
-                        <span class="toggle-icon" onclick="togglePassword('register-confirm')">👁</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary btn-auth" id="register-btn">Create Account</button>
-
-                <div class="auth-divider">or</div>
-
-                <button type="button" class="btn-auth btn-google" onclick="loginWithGoogle()">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
-                    Continue with Google
-                </button>
-            </form>
-
-            <!-- Reset Password Form -->
-            <form id="reset-form" class="auth-form">
-                <div id="reset-message" class="auth-message"></div>
-                
-                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">
-                    Enter your email and we'll send you a link to reset your password.
-                </p>
-
-                <div class="form-group">
-                    <label for="reset-email">Email</label>
-                    <input type="email" id="reset-email" placeholder="Enter your email" required>
-                </div>
-
-                <button type="submit" class="btn-primary btn-auth" id="reset-btn">Send Reset Link</button>
-
-                <div class="auth-link">
-                    <a href="#" onclick="showTab('login')">Back to Login</a>
-                </div>
-            </form>
+        <div class="back-home">
+            <a href="index.html">← Back to Home</a>
         </div>
     </div>
 
@@ -331,7 +411,6 @@
             measurementId: "G-E2658JJ29R"
         };
 
-        // Make config available globally
         window.firebaseConfig = firebaseConfig;
 
         // Initialize Firebase
@@ -345,7 +424,6 @@
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             document.getElementById(`${tabName}-form`).classList.add('active');
             
-            // Hide messages
             document.querySelectorAll('.auth-message').forEach(m => {
                 m.classList.remove('show', 'success', 'error');
             });
@@ -355,7 +433,7 @@
             tab.addEventListener('click', () => showTab(tab.dataset.tab));
         });
 
-        // Toggle password visibility
+        // Toggle password
         function togglePassword(inputId) {
             const input = document.getElementById(inputId);
             input.type = input.type === 'password' ? 'text' : 'password';
@@ -372,8 +450,8 @@
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('login-btn');
-            btn.classList.add('loading');
             btn.disabled = true;
+            btn.textContent = 'Logging in...';
 
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
@@ -382,21 +460,20 @@
             
             if (result.success) {
                 showMessage('login', 'Login successful! Redirecting...', true);
-                setTimeout(() => window.location.href = 'index.html', 1500);
+                setTimeout(() => window.location.href = 'index.html', 1000);
             } else {
                 showMessage('login', result.error, false);
+                btn.disabled = false;
+                btn.textContent = 'Login';
             }
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
         });
 
         // Register
         document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('register-btn');
-            btn.classList.add('loading');
             btn.disabled = true;
+            btn.textContent = 'Creating...';
 
             const name = document.getElementById('register-name').value;
             const email = document.getElementById('register-email').value;
@@ -405,8 +482,8 @@
 
             if (password !== confirm) {
                 showMessage('register', 'Passwords do not match', false);
-                btn.classList.remove('loading');
                 btn.disabled = false;
+                btn.textContent = 'Create Account';
                 return;
             }
 
@@ -414,13 +491,12 @@
             
             if (result.success) {
                 showMessage('register', 'Account created! Redirecting...', true);
-                setTimeout(() => window.location.href = 'index.html', 1500);
+                setTimeout(() => window.location.href = 'index.html', 1000);
             } else {
                 showMessage('register', result.error, false);
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
             }
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
         });
 
         // Login with Google
@@ -444,11 +520,10 @@
         document.getElementById('reset-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('reset-btn');
-            btn.classList.add('loading');
             btn.disabled = true;
+            btn.textContent = 'Sending...';
 
             const email = document.getElementById('reset-email').value;
-
             const result = await FirebaseAuth.resetPassword(email);
             
             if (result.success) {
@@ -456,13 +531,12 @@
                 setTimeout(() => showTab('login'), 3000);
             } else {
                 showMessage('reset', result.error, false);
+                btn.disabled = false;
+                btn.textContent = 'Send Reset Link';
             }
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
         });
 
-        // Check if already logged in
+        // Check if logged in
         FirebaseAuth.getCurrentUser().then(user => {
             if (user) {
                 window.location.href = 'index.html';
