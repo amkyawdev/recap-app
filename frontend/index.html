@@ -14,10 +14,54 @@
             <h1>Burme Transcript</h1>
         </div>
         <div class="header-actions">
+            <button id="about-btn" class="btn-icon" title="About">ℹ️</button>
             <button id="theme-toggle" class="btn-icon" title="Toggle Theme">🌙</button>
+            <button id="logout-btn" class="btn-icon" title="Logout">🚪</button>
             <button id="export-btn" class="btn-primary">Export SRT</button>
         </div>
     </header>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="about-close">&times;</span>
+            <div class="about-content">
+                <div class="about-header">
+                    <span class="about-icon">🎬</span>
+                    <h2>Burme Transcript</h2>
+                    <p class="version">Version 1.0.0</p>
+                </div>
+                <div class="about-description">
+                    <p>A web application for movie transcript editing with SRT subtitle support.</p>
+                </div>
+                <div class="developer-info">
+                    <h3>Developer Information</h3>
+                    <div class="dev-details">
+                        <div class="dev-item">
+                            <span class="dev-label">Name:</span>
+                            <span class="dev-value">Aung Myo Kyaw</span>
+                        </div>
+                        <div class="dev-item">
+                            <span class="dev-label">Role:</span>
+                            <span class="dev-value">Full Stack Developer</span>
+                        </div>
+                        <div class="dev-item">
+                            <span class="dev-label">Phone:</span>
+                            <span class="dev-value">0967740154</span>
+                        </div>
+                        <div class="dev-item">
+                            <span class="dev-label">Email:</span>
+                            <span class="dev-value">wayne.mm.92@gmail.com</span>
+                        </div>
+                        <div class="dev-item">
+                            <span class="dev-label">Location:</span>
+                            <span class="dev-value">Naypyidaw, Myanmar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="app-container">
         <!-- Left Panel: File Manager -->
@@ -134,6 +178,37 @@
                     <input type="range" id="offset-slider" min="-5000" max="5000" value="0">
                     <span id="offset-value">0ms</span>
                 </div>
+
+                <!-- Subtitle Style Settings -->
+                <div class="subtitle-style-panel">
+                    <h3>Subtitle Style</h3>
+                    <div class="style-options">
+                        <div class="style-group">
+                            <label>Font Size</label>
+                            <select id="subtitle-font-size">
+                                <option value="16">16px</option>
+                                <option value="20" selected>20px</option>
+                                <option value="24">24px</option>
+                                <option value="28">28px</option>
+                                <option value="32">32px</option>
+                                <option value="40">40px</option>
+                            </select>
+                        </div>
+                        <div class="style-group">
+                            <label>Font Color</label>
+                            <input type="color" id="subtitle-font-color" value="#ffffff">
+                        </div>
+                        <div class="style-group">
+                            <label>Background</label>
+                            <input type="color" id="subtitle-bg-color" value="#000000">
+                        </div>
+                        <div class="style-group">
+                            <label>Opacity</label>
+                            <input type="range" id="subtitle-opacity" min="0" max="100" value="80">
+                        </div>
+                    </div>
+                    <button id="apply-style-btn" class="btn-secondary">Apply Style</button>
+                </div>
             </div>
         </section>
 
@@ -160,6 +235,12 @@
     <input type="file" id="hidden-video-input" accept="video/*" style="display:none">
     <input type="file" id="hidden-subtitle-input" accept=".srt" multiple style="display:none">
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase-auth.js"></script>
     <script src="js/srt-parser.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/player.js"></script>

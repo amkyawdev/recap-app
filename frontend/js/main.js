@@ -20,6 +20,9 @@ const App = (function() {
         
         // Initialize modules
         initTheme();
+        initAboutModal();
+        initLogout();
+        initSubtitleStyle();
         initVideoPlayer();
         initSubtitleEditor();
         initFileUpload();
@@ -87,6 +90,109 @@ const App = (function() {
         if (themeToggle) {
             themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
         }
+    }
+
+    /**
+     * Initialize About Modal
+     */
+    function initAboutModal() {
+        const aboutBtn = document.getElementById('about-btn');
+        const aboutModal = document.getElementById('about-modal');
+        const aboutClose = document.getElementById('about-close');
+
+        if (aboutBtn && aboutModal) {
+            aboutBtn.addEventListener('click', () => {
+                aboutModal.classList.add('show');
+            });
+
+            if (aboutClose) {
+                aboutClose.addEventListener('click', () => {
+                    aboutModal.classList.remove('show');
+                });
+            }
+
+            aboutModal.addEventListener('click', (e) => {
+                if (e.target === aboutModal) {
+                    aboutModal.classList.remove('show');
+                }
+            });
+        }
+    }
+
+    /**
+     * Initialize Logout Button
+     */
+    function initLogout() {
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to logout?')) {
+                    await FirebaseAuth.logout();
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    }
+
+    /**
+     * Initialize Subtitle Style Controls
+     */
+    function initSubtitleStyle() {
+        const applyStyleBtn = document.getElementById('apply-style-btn');
+        if (applyStyleBtn) {
+            applyStyleBtn.addEventListener('click', applySubtitleStyle);
+        }
+        
+        // Load saved style
+        loadSubtitleStyle();
+    }
+
+    /**
+     * Apply subtitle style to overlay
+     */
+    function applySubtitleStyle() {
+        const fontSize = document.getElementById('subtitle-font-size').value;
+        const fontColor = document.getElementById('subtitle-font-color').value;
+        const bgColor = document.getElementById('subtitle-bg-color').value;
+        const opacity = document.getElementById('subtitle-opacity').value;
+
+        const overlay = document.getElementById('subtitle-overlay');
+        if (overlay) {
+            overlay.style.fontSize = fontSize + 'px';
+            overlay.style.color = fontColor;
+            overlay.style.backgroundColor = hexToRgba(bgColor, opacity / 100);
+        }
+
+        // Save to storage
+        Utils.Storage.set('subtitleStyle', { fontSize, fontColor, bgColor, opacity });
+        
+        Utils.showToast('Style applied!', 'success');
+    }
+
+    /**
+     * Load saved subtitle style
+     */
+    function loadSubtitleStyle() {
+        const style = Utils.Storage.get('subtitleStyle', null);
+        if (style) {
+            document.getElementById('subtitle-font-size').value = style.fontSize || 20;
+            document.getElementById('subtitle-font-color').value = style.fontColor || '#ffffff';
+            document.getElementById('subtitle-bg-color').value = style.bgColor || '#000000';
+            document.getElementById('subtitle-opacity').value = style.opacity || 80;
+            
+            // Apply the style
+            setTimeout(applySubtitleStyle, 500);
+        }
+    }
+
+    /**
+     * Convert hex to rgba
+     */
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     /**
