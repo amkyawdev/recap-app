@@ -249,10 +249,37 @@ const App = (function() {
             overlay.style.backgroundColor = hexToRgba(bgColor, opacity / 100);
             overlay.style.fontWeight = fontWeight;
             
-            // Position
-            overlay.style.top = position === 'top' ? '10%' : (position === 'center' ? '50%' : 'auto');
-            overlay.style.bottom = position === 'bottom' ? '10%' : 'auto';
-            overlay.style.transform = position === 'center' ? 'translateY(-50%)' : 'none';
+            // Position handling
+            const [vPos, hPos] = position.split('-');
+            
+            // Vertical position
+            if (vPos === 'top') {
+                overlay.style.top = '10%';
+                overlay.style.bottom = 'auto';
+            } else if (vPos === 'center') {
+                overlay.style.top = '50%';
+                overlay.style.bottom = 'auto';
+                overlay.style.transform = 'translateY(-50%)';
+            } else {
+                overlay.style.top = 'auto';
+                overlay.style.bottom = '10%';
+                overlay.style.transform = 'none';
+            }
+            
+            // Horizontal position
+            if (hPos === 'left') {
+                overlay.style.left = '10%';
+                overlay.style.transform = vPos === 'center' ? 'translateY(-50%)' : 'none';
+            } else if (hPos === 'right') {
+                overlay.style.left = 'auto';
+                overlay.style.right = '10%';
+                overlay.style.transform = vPos === 'center' ? 'translateY(-50%)' : 'none';
+            } else {
+                // center
+                overlay.style.left = '50%';
+                overlay.style.right = 'auto';
+                overlay.style.transform = vPos === 'center' ? 'translate(-50%, -50%)' : 'translateX(-50%)';
+            }
             
             // Outline
             if (outline !== 'none') {
@@ -286,7 +313,7 @@ const App = (function() {
             document.getElementById('subtitle-bg-color').value = style.bgColor || '#000000';
             document.getElementById('subtitle-opacity').value = style.opacity || 80;
             if (document.getElementById('subtitle-position')) {
-                document.getElementById('subtitle-position').value = style.position || 'bottom';
+                document.getElementById('subtitle-position').value = style.position || 'bottom-center';
             }
             if (document.getElementById('subtitle-font-weight')) {
                 document.getElementById('subtitle-font-weight').value = style.fontWeight || 'normal';
