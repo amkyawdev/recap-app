@@ -55,7 +55,7 @@
         <!-- Center Panel: Video Player + Editor -->
         <section class="panel video-editor">
             <div class="video-container">
-                <video id="video-player" controls>
+                <video id="video-player" playsinline>
                     Your browser does not support HTML5 video.
                 </video>
                 <div class="subtitle-overlay" id="subtitle-overlay"></div>
@@ -64,6 +64,39 @@
                         <span class="placeholder-icon">🎬</span>
                         <p>No video loaded</p>
                         <p class="placeholder-hint">Drop a video file or click to upload</p>
+                    </div>
+                </div>
+                <!-- Custom Controls -->
+                <div class="custom-controls" id="custom-controls">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar">
+                            <div class="progress-played" id="progress-played"></div>
+                            <div class="progress-buffered" id="progress-buffered"></div>
+                        </div>
+                        <div class="time-display" id="time-display">0:00 / 0:00</div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="controls-left">
+                            <button class="control-btn" id="play-pause-btn" title="Play/Pause">▶</button>
+                            <button class="control-btn" id="stop-btn" title="Stop">⏹</button>
+                            <button class="control-btn" id="rewind-btn" title="Rewind 10s">⏪</button>
+                            <button class="control-btn" id="forward-btn" title="Forward 10s">⏩</button>
+                            <div class="volume-control">
+                                <button class="control-btn" id="mute-btn" title="Mute">🔊</button>
+                                <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1">
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <select class="speed-selector" id="speed-selector" title="Playback Speed">
+                                <option value="0.5">0.5x</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                            <button class="control-btn" id="fullscreen-btn" title="Fullscreen">⛶</button>
+                        </div>
                     </div>
                 </div>
             </div>

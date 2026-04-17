@@ -32,8 +32,129 @@ const VideoPlayer = (function() {
         // Set up event listeners
         setupEventListeners();
         
+        // Set up custom controls
+        setupCustomControls();
+        
         // Update initial state
         updateState();
+    }
+
+    /**
+     * Set up custom video controls
+     */
+    function setupCustomControls() {
+        // Play/Pause button
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        if (playPauseBtn) {
+            playPauseBtn.addEventListener('click', togglePlay);
+        }
+
+        // Stop button
+        const stopBtn = document.getElementById('stop-btn');
+        if (stopBtn) {
+            stopBtn.addEventListener('click', stop);
+        }
+
+        // Rewind button
+        const rewindBtn = document.getElementById('rewind-btn');
+        if (rewindBtn) {
+            rewindBtn.addEventListener('click', () => seekRelative(-10));
+        }
+
+        // Forward button
+        const forwardBtn = document.getElementById('forward-btn');
+        if (forwardBtn) {
+            forwardBtn.addEventListener('click', () => seekRelative(10));
+        }
+
+        // Mute button
+        const muteBtn = document.getElementById('mute-btn');
+        if (muteBtn) {
+            muteBtn.addEventListener('click', toggleMute);
+        }
+
+        // Volume slider
+        const volumeSlider = document.getElementById('volume-slider');
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
+        }
+
+        // Progress bar
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const percent = ((e.clientX - rect.left) / rect.width) * 100;
+                seekToPercent(percent);
+            });
+        }
+
+        // Speed selector
+        const speedSelector = document.getElementById('speed-selector');
+        if (speedSelector) {
+            speedSelector.addEventListener('change', (e) => setPlaybackRate(parseFloat(e.target.value)));
+        }
+
+        // Fullscreen button
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        }
+    }
+
+    /**
+     * Stop video playback
+     */
+    function stop() {
+        if (!video) return;
+        video.pause();
+        video.currentTime = 0;
+    }
+
+    /**
+     * Update custom controls UI
+     */
+    function updateCustomControls() {
+        if (!video) return;
+
+        // Update progress bar
+        const played = document.getElementById('progress-played');
+        if (played && video.duration) {
+            played.style.width = `${(video.currentTime / video.duration) * 100}%`;
+        }
+
+        // Update buffered
+        const buffered = document.getElementById('progress-buffered');
+        if (buffered && video.buffered.length > 0) {
+            const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+            buffered.style.width = `${(bufferedEnd / video.duration) * 100}%`;
+        }
+
+        // Update time display
+        const timeDisplay = document.getElementById('time-display');
+        if (timeDisplay && video.duration) {
+            const current = Utils.formatTime(video.currentTime * 1000);
+            const total = Utils.formatTime(video.duration * 1000);
+            timeDisplay.textContent = `${current} / ${total}`;
+        }
+
+        // Update play/pause button
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        if (playPauseBtn) {
+            playPauseBtn.textContent = video.paused ? '▶' : '⏸';
+        }
+
+        // Update mute button
+        const muteBtn = document.getElementById('mute-btn');
+        if (muteBtn) {
+            if (video.muted || video.volume === 0) {
+                muteBtn.textContent = '🔇';
+            } else if (video.volume < 0.5) {
+                muteBtn.textContent = '🔉';
+            } else {
+                muteBtn.textContent = '🔊';
+            }
+        }
     }
 
     /**
@@ -83,8 +204,8 @@ const VideoPlayer = (function() {
             timeUpdateCallback(currentTime);
         }
         
-        // Update progress bar if exists
-        updateProgressBar();
+        // Update custom controls
+        updateCustomControls();
     }
 
     /**
