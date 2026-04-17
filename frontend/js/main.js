@@ -32,11 +32,29 @@ const App = (function() {
         // Set up subtitle selection sync
         SubtitleEditor.onSelect(handleSubtitleSelect);
         
+        // Load sample subtitle on init
+        loadSampleSubtitle();
+        
         isLoaded = true;
         console.log('App initialized successfully');
         
         // Show welcome message
         Utils.showToast('Welcome to Burme Transcript App', 'info');
+    }
+    
+    /**
+     * Load sample subtitle file
+     */
+    function loadSampleSubtitle() {
+        fetch('assets/sample.srt')
+            .then(response => response.text())
+            .then(content => {
+                if (content) {
+                    SubtitleEditor.loadFromSRT(content);
+                    console.log('Sample subtitle loaded');
+                }
+            })
+            .catch(err => console.log('No sample subtitle found'));
     }
 
     /**
@@ -81,6 +99,16 @@ const App = (function() {
         const controlsContainer = document.querySelector('.video-controls-container');
         if (controlsContainer) {
             VideoPlayer.registerControls(controlsContainer);
+        }
+        
+        // Set up video placeholder click to upload
+        const placeholder = document.getElementById('video-placeholder');
+        const videoUploadZone = document.getElementById('video-upload-zone');
+        if (placeholder && videoUploadZone) {
+            placeholder.addEventListener('click', () => {
+                const input = videoUploadZone.querySelector('input');
+                if (input) input.click();
+            });
         }
     }
 
@@ -195,6 +223,12 @@ const App = (function() {
         // Load video
         const url = URL.createObjectURL(file);
         VideoPlayer.loadVideo(url);
+        
+        // Hide placeholder
+        const placeholder = document.getElementById('video-placeholder');
+        if (placeholder) {
+            placeholder.classList.add('hidden');
+        }
         
         currentVideoFile = file;
         

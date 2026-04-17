@@ -1,0 +1,35 @@
+1
+00:00:01,500 --> 00:00:04,000
+Welcome to Burme Transcript App
+
+2
+00:00:04,500 --> 00:00:08,000
+This is a subtitle editing application
+
+3
+00:00:08,500 --> 00:00:12,000
+You can upload your own video and SRT files
+
+4
+00:00:12,500 --> 00:00:16,000
+Click on any subtitle to edit it in real-time
+
+5
+00:00:16,500 --> 00:00:20,000
+Use the time offset slider to sync subtitles
+
+6
+00:00:20,500 --> 00:00:24,000
+Export your edited subtitles as SRT file
+
+7
+00:00:24,500 --> 00:00:28,000
+Use keyboard shortcuts for quick control
+
+8
+00:00:28,500 --> 00:00:32,000
+Space = Play/Pause, Arrow keys = Seek
+
+9
+00:00:32,500 --> 00:00:36,000
+Enjoy editing your subtitles!

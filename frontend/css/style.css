@@ -344,6 +344,45 @@ body {
     opacity: 1;
 }
 
+/* Video Placeholder */
+.video-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-tertiary);
+    cursor: pointer;
+}
+
+.video-placeholder.hidden {
+    display: none;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.placeholder-icon {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.placeholder-content p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.placeholder-hint {
+    font-size: 13px !important;
+    color: var(--text-muted);
+}
+
 /* Editor Panel */
 .editor-panel {
     flex: 1;
