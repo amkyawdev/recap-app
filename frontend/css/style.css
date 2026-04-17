@@ -325,7 +325,6 @@ body {
 
 .subtitle-overlay {
     position: absolute;
-    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     padding: 12px 20px;
@@ -343,6 +342,8 @@ body {
     left: 50%;
     top: auto;
     transform: translateX(-50%);
+    /* Myanmar font support */
+    font-family: 'Myanmar Text', 'Padauk', Arial, sans-serif;
 }
 
 .subtitle-overlay.visible {

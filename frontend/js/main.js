@@ -317,6 +317,7 @@ const App = (function() {
         const style = Utils.Storage.get('subtitleStyle', null);
         if (style) {
             if (document.getElementById('subtitle-font-family')) {
+                // Set default to English font
                 document.getElementById('subtitle-font-family').value = style.fontFamily || 'Arial';
             }
             document.getElementById('subtitle-font-size').value = style.fontSize || 20;
