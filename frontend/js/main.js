@@ -156,7 +156,9 @@ const App = (function() {
         const mobileMenu = document.getElementById('mobile-menu');
         
         if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', () => {
+            menuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                menuBtn.classList.toggle('active');
                 mobileMenu.classList.toggle('show');
             });
             
@@ -168,6 +170,7 @@ const App = (function() {
                 menuAbout.addEventListener('click', (e) => {
                     e.preventDefault();
                     document.getElementById('about-modal').classList.add('show');
+                    menuBtn.classList.remove('active');
                     mobileMenu.classList.remove('show');
                 });
             }
@@ -179,6 +182,14 @@ const App = (function() {
                     mobileMenu.classList.remove('show');
                 });
             }
+            
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.menu-btn') && !e.target.closest('.mobile-menu')) {
+                    menuBtn.classList.remove('active');
+                    mobileMenu.classList.remove('show');
+                }
+            });
         }
     }
 
