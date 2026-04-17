@@ -181,8 +181,12 @@
                                 <button class="time-btn" onclick="adjustTime('start-time', 1000)">+</button>
                             </div>
                             <div class="time-adjust-btns">
-                                <button class="tiny-btn" onclick="adjustTime('start-time', -100)">-100ms</button>
-                                <button class="tiny-btn" onclick="adjustTime('start-time', 100)">+100ms</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', -100)">-100</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', -50)">-50</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', -10)">-10</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', 10)">+10</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', 50)">+50</button>
+                                <button class="tiny-btn" onclick="adjustTime('start-time', 100)">+100</button>
                             </div>
                         </div>
                         <div class="timecode-group">
@@ -193,8 +197,12 @@
                                 <button class="time-btn" onclick="adjustTime('end-time', 1000)">+</button>
                             </div>
                             <div class="time-adjust-btns">
-                                <button class="tiny-btn" onclick="adjustTime('end-time', -100)">-100ms</button>
-                                <button class="tiny-btn" onclick="adjustTime('end-time', 100)">+100ms</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', -100)">-100</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', -50)">-50</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', -10)">-10</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', 10)">+10</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', 50)">+50</button>
+                                <button class="tiny-btn" onclick="adjustTime('end-time', 100)">+100</button>
                             </div>
                         </div>
                     </div>
@@ -214,33 +222,77 @@
 
                 <!-- Subtitle Style Settings -->
                 <div class="subtitle-style-panel">
-                    <h3>Subtitle Style</h3>
+                    <h3>🎨 Style Editor</h3>
                     <div class="style-options">
-                        <div class="style-group">
-                            <label>Font Size</label>
-                            <select id="subtitle-font-size">
-                                <option value="16">16px</option>
-                                <option value="20" selected>20px</option>
-                                <option value="24">24px</option>
-                                <option value="28">28px</option>
-                                <option value="32">32px</option>
-                                <option value="40">40px</option>
-                            </select>
+                        <div class="style-row">
+                            <div class="style-group">
+                                <label>Font</label>
+                                <select id="subtitle-font-family">
+                                    <option value="Arial">Arial</option>
+                                    <option value="Helvetica">Helvetica</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                    <option value="Georgia">Georgia</option>
+                                    <option value="Verdana">Verdana</option>
+                                    <option value="Roboto">Roboto</option>
+                                </select>
+                            </div>
+                            <div class="style-group">
+                                <label>Size</label>
+                                <select id="subtitle-font-size">
+                                    <option value="14">14px</option>
+                                    <option value="16">16px</option>
+                                    <option value="18">18px</option>
+                                    <option value="20" selected>20px</option>
+                                    <option value="24">24px</option>
+                                    <option value="28">28px</option>
+                                    <option value="32">32px</option>
+                                    <option value="40">40px</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="style-group">
-                            <label>Font Color</label>
-                            <input type="color" id="subtitle-font-color" value="#ffffff">
+                        <div class="style-row">
+                            <div class="style-group">
+                                <label>Font Color</label>
+                                <input type="color" id="subtitle-font-color" value="#ffffff">
+                            </div>
+                            <div class="style-group">
+                                <label>Background</label>
+                                <input type="color" id="subtitle-bg-color" value="#000000">
+                            </div>
                         </div>
-                        <div class="style-group">
-                            <label>Background</label>
-                            <input type="color" id="subtitle-bg-color" value="#000000">
+                        <div class="style-row">
+                            <div class="style-group">
+                                <label>Opacity</label>
+                                <input type="range" id="subtitle-opacity" min="0" max="100" value="80">
+                            </div>
+                            <div class="style-group">
+                                <label>Position</label>
+                                <select id="subtitle-position">
+                                    <option value="bottom" selected>Bottom</option>
+                                    <option value="top">Top</option>
+                                    <option value="center">Center</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="style-group">
-                            <label>Opacity</label>
-                            <input type="range" id="subtitle-opacity" min="0" max="100" value="80">
+                        <div class="style-row">
+                            <div class="style-group">
+                                <label>Font Weight</label>
+                                <select id="subtitle-font-weight">
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="bold">Bold</option>
+                                </select>
+                            </div>
+                            <div class="style-group">
+                                <label>Outline</label>
+                                <select id="subtitle-outline">
+                                    <option value="none" selected>None</option>
+                                    <option value="black">Black</option>
+                                    <option value="white">White</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <button id="apply-style-btn" class="btn-secondary">Apply Style</button>
+                    <button id="apply-style-btn" class="btn-primary btn-sm">Apply Style</button>
                 </div>
             </div>
         </section>

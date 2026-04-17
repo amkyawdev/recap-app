@@ -864,10 +864,19 @@ body {
 }
 
 .style-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 12px;
     margin-bottom: 12px;
+}
+
+.style-row {
+    display: flex;
+    gap: 12px;
+}
+
+.style-row .style-group {
+    flex: 1;
 }
 
 .style-group {

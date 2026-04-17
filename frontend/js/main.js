@@ -199,20 +199,42 @@ const App = (function() {
      * Apply subtitle style to overlay
      */
     function applySubtitleStyle() {
+        const fontFamily = document.getElementById('subtitle-font-family').value;
         const fontSize = document.getElementById('subtitle-font-size').value;
         const fontColor = document.getElementById('subtitle-font-color').value;
         const bgColor = document.getElementById('subtitle-bg-color').value;
         const opacity = document.getElementById('subtitle-opacity').value;
+        const position = document.getElementById('subtitle-position').value;
+        const fontWeight = document.getElementById('subtitle-font-weight').value;
+        const outline = document.getElementById('subtitle-outline').value;
 
         const overlay = document.getElementById('subtitle-overlay');
         if (overlay) {
+            overlay.style.fontFamily = fontFamily;
             overlay.style.fontSize = fontSize + 'px';
             overlay.style.color = fontColor;
             overlay.style.backgroundColor = hexToRgba(bgColor, opacity / 100);
+            overlay.style.fontWeight = fontWeight;
+            
+            // Position
+            overlay.style.top = position === 'top' ? '10%' : (position === 'center' ? '50%' : 'auto');
+            overlay.style.bottom = position === 'bottom' ? '10%' : 'auto';
+            overlay.style.transform = position === 'center' ? 'translateY(-50%)' : 'none';
+            
+            // Outline
+            if (outline !== 'none') {
+                overlay.style.textShadow = outline === 'black' 
+                    ? '2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000'
+                    : '2px 2px 2px #fff, -2px -2px 2px #fff, 2px -2px 2px #fff, -2px 2px 2px #fff';
+            } else {
+                overlay.style.textShadow = 'none';
+            }
         }
 
         // Save to storage
-        Utils.Storage.set('subtitleStyle', { fontSize, fontColor, bgColor, opacity });
+        Utils.Storage.set('subtitleStyle', { 
+            fontFamily, fontSize, fontColor, bgColor, opacity, position, fontWeight, outline 
+        });
         
         Utils.showToast('Style applied!', 'success');
     }
@@ -223,10 +245,22 @@ const App = (function() {
     function loadSubtitleStyle() {
         const style = Utils.Storage.get('subtitleStyle', null);
         if (style) {
+            if (document.getElementById('subtitle-font-family')) {
+                document.getElementById('subtitle-font-family').value = style.fontFamily || 'Arial';
+            }
             document.getElementById('subtitle-font-size').value = style.fontSize || 20;
             document.getElementById('subtitle-font-color').value = style.fontColor || '#ffffff';
             document.getElementById('subtitle-bg-color').value = style.bgColor || '#000000';
             document.getElementById('subtitle-opacity').value = style.opacity || 80;
+            if (document.getElementById('subtitle-position')) {
+                document.getElementById('subtitle-position').value = style.position || 'bottom';
+            }
+            if (document.getElementById('subtitle-font-weight')) {
+                document.getElementById('subtitle-font-weight').value = style.fontWeight || 'normal';
+            }
+            if (document.getElementById('subtitle-outline')) {
+                document.getElementById('subtitle-outline').value = style.outline || 'none';
+            }
             
             // Apply the style
             setTimeout(applySubtitleStyle, 500);
