@@ -1,139 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burme Transcript App</title>
-    <!-- PWA Icons -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/favicon.svg">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#6366f1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/modern.css">
-    <link rel="stylesheet" href="css/player.css">
-    <!-- Myanmar Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Burmese Subtitle Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Myanmar+Text&family=Padauk:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --radius: 8px;
+            --transition: all 0.2s;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Myanmar Text', 'Padauk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-size: 18px; font-weight: bold; }
+        .header-actions { display: flex; gap: 8px; }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+        
+        /* App Container */
         .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 64px);
-            padding: 12px;
-            gap: 12px;
+            gap: 16px;
         }
-        .panel.video-editor {
-            flex: 0 0 auto;
-            min-height: auto;
-        }
-        .panel.subtitle-list {
-            flex: 0 0 200px;
-            min-height: 200px;
-        }
+        
+        /* Upload Bar */
         .upload-bar {
             display: flex;
             gap: 12px;
             justify-content: center;
-            padding: 12px;
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
         }
-        .upload-bar .btn-upload {
-            flex: 1;
-            max-width: 200px;
-            padding: 10px 16px;
-            background: var(--primary);
-            border: none;
-            border-radius: var(--radius);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .upload-bar .btn-upload:hover {
-            opacity: 0.9;
-        }
-        .upload-bar input[type="file"] {
-            display: none;
-        }
-        .upload-bar .upload-zone {
-            flex: 1;
-            max-width: 280px;
-            padding: 16px 20px;
-            background: var(--bg-tertiary);
-            border: 2px dashed var(--border-color);
-            border-radius: var(--radius);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .upload-bar .upload-zone:hover {
-            border-color: var(--primary);
-            background: var(--bg-hover);
-        }
-        .upload-bar .upload-zone input {
-            display: none;
-        }
-        .upload-bar .upload-zone span {
+        .upload-bar button {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            gap: 8px;
         }
-        .panel {
-            flex: 1;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        
+        /* Video Section */
+        .video-section {
+            position: relative;
         }
         .video-container {
             position: relative;
             background: #000;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             overflow: hidden;
-            min-height: 200px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
+            aspect-ratio: 16/9;
+            max-height: 60vh;
         }
         #video-player {
             width: 100%;
             height: 100%;
-            max-height: 100%;
             object-fit: contain;
-            display: block;
-            z-index: 2;
-            position: relative;
         }
-        .video-placeholder {
+        
+        /* Subtitle Overlay */
+        .subtitle-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-secondary);
-            z-index: 1;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            pointer-events: none;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
         }
-        .video-placeholder.hidden {
-            display: none;
+        .subtitle-overlay .subtitle-text {
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 22px;
+            line-height: 1.5;
+            display: inline-block;
         }
-        /* Video Controls Inside Container */
+        
+        /* Video Controls - Inside */
         .video-controls {
             position: absolute;
             bottom: 10px;
@@ -143,14 +128,19 @@
             flex-direction: column;
             gap: 8px;
             padding: 10px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             border-radius: var(--radius);
             z-index: 10;
         }
-        .video-controls .progress-bar-container {
+        .video-controls .progress-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+        }
+        .video-controls .time-display {
+            font-size: 12px;
+            color: #fff;
+            min-width: 80px;
         }
         .video-controls .progress-bar {
             flex: 1;
@@ -158,411 +148,278 @@
             background: rgba(255,255,255,0.3);
             border-radius: 3px;
             cursor: pointer;
+            position: relative;
         }
-        .video-controls .time-display {
-            font-size: 11px;
-            color: #fff;
-            min-width: 70px;
+        .video-controls .progress-played {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            width: 0%;
         }
-        .video-controls .controls-row {
+        .video-controls .buttons-row {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
         .video-controls .control-btn {
             background: none;
             border: none;
             font-size: 16px;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: var(--radius);
             color: #fff;
         }
-        .video-controls .control-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        .video-controls .volume-slider {
-            width: 60px;
-        }
+        .video-controls .control-btn:hover { background: rgba(255,255,255,0.2); }
+        .video-controls .volume-slider { width: 70px; }
         .video-controls .speed-selector {
-            padding: 2px 6px;
-            font-size: 11px;
+            padding: 4px 8px;
+            font-size: 12px;
             background: rgba(255,255,255,0.2);
             color: #fff;
             border: none;
+            border-radius: var(--radius);
         }
-        /* Compact Time Inputs */
-        .timecode-inputs {
+        
+        /* Video Placeholder */
+        .video-placeholder {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .time-row {
-            display: flex;
-            gap: 12px;
-            flex: 1;
-        }
-        .time-group {
-            flex: 1;
-            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
         }
-        .time-group label {
+        .video-placeholder.hidden { display: none; }
+        
+        /* Editor Section */
+        .editor-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .editor-panel {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .editor-header h2 { font-size: 16px; }
+        .editor-buttons { display: flex; gap: 8px; }
+        
+        /* Subtitle Input */
+        .subtitle-input-area { display: flex; flex-direction: column; gap: 12px; }
+        .time-row { display: flex; gap: 12px; }
+        .time-field { flex: 1; }
+        .time-field label { display: block; font-size: 12px; margin-bottom: 4px; color: var(--text-muted); }
+        .time-field input {
+            width: 100%;
+            padding: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+        .subtitle-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        /* Subtitle List */
+        .subtitle-list {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .subtitle-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .subtitle-item:hover { background: var(--bg-primary); }
+        .subtitle-item.active { border-left: 3px solid var(--primary); }
+        .subtitle-item .time {
             font-size: 12px;
             color: var(--text-muted);
-            white-space: nowrap;
+            font-family: monospace;
         }
-        .timecode {
-            flex: 1;
-            padding: 6px 8px;
-            font-size: 13px;
-            width: 100%;
-        }
-        .subtitle-actions {
+        .subtitle-item .text { margin-top: 4px; }
+        
+        /* Device Frame Toggle */
+        .device-frame-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            align-items: center;
+            gap: 4px;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: var(--radius);
+            z-index: 1000;
         }
-        .subtitle-actions .btn-secondary {
-            padding: 6px 10px;
+        .device-frame-toggle button {
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: var(--radius);
+        }
+        .device-frame-toggle button.active {
+            background: var(--primary);
+            color: white;
         }
         
-        /* Mobile Responsive */
+        /* Device Frames */
+        body.device-mobile .app-container { max-width: 480px; }
+        body.device-mobile .editor-section { grid-template-columns: 1fr; }
+        body.device-mobile .video-container { aspect-ratio: 9/16; max-height: 70vh; }
+        
+        body.device-tablet .app-container { max-width: 768px; }
+        body.device-tablet .video-container { max-height: 50vh; }
+        
+        body.device-desktop .app-container { max-width: 1400px; }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .app-container {
-                padding: 8px;
-                gap: 8px;
-            }
-            .upload-bar {
-                flex-direction: row;
-                gap: 8px;
-                padding: 10px;
-            }
-            .upload-bar .upload-zone {
-                padding: 12px 16px;
-                max-width: none;
-            }
-            .upload-bar .upload-zone span {
-                font-size: 13px;
-                gap: 6px;
-            }
-            .panel.video-editor {
-                flex: 2;
-                min-height: 200px;
-            }
-            .panel.subtitle-list {
-                flex: 1;
-                min-height: 120px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .app-header {
-                padding: 8px 12px;
-            }
-            .header-left .logo h1 {
-                font-size: 16px;
-            }
-            .upload-bar {
-                flex-direction: column;
-            }
-            .upload-bar .upload-zone {
-                padding: 14px;
-            }
+            .editor-section { grid-template-columns: 1fr; }
+            .upload-bar { flex-direction: column; }
+            .upload-bar button { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
-    <header class="app-header">
-        <div class="header-left">
-            <button class="menu-btn" id="menu-btn" title="Menu">
-                <span class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-            </button>
-            <div class="logo">
-                <span class="logo-icon">🎬</span>
-                <h1>Burme Transcript</h1>
-            </div>
-        </div>
+    <header>
+        <div class="logo"><i class="bi bi-file-text"></i> Subtitle Editor</div>
         <div class="header-actions">
-            <a href="dashboard.html" class="btn-icon btn-sm-icon" title="Dashboard"><i class="bi bi-speedometer2"></i></a>
-            <a href="translate.html" class="btn-icon btn-sm-icon" title="Translate"><i class="bi bi-translate"></i></a>
-            <a href="tts.html" class="btn-icon btn-sm-icon" title="Text to Speech"><i class="bi bi-volume-up"></i></a>
-            <a href="docs.html" class="btn-icon btn-sm-icon" title="Docs"><i class="bi bi-book"></i></a>
-            <a href="about.html" class="btn-icon btn-sm-icon" title="About"><i class="bi bi-info-circle"></i></a>
-            <button id="theme-toggle" class="btn-icon btn-sm-icon" title="Toggle Theme"><i class="bi bi-moon"></i></button>
-            <button id="logout-btn" class="btn-icon btn-sm-icon" title="Logout"><i class="bi bi-key"></i></button>
-            <div class="export-dropdown">
-                <button id="export-btn" class="btn-primary btn-sm"><i class="bi bi-download"></i> Export</button>
-                <div class="export-menu" id="export-menu">
-                    <a href="#" id="export-srt"><i class="bi bi-file-text"></i> Export as SRT</a>
-                    <a href="#" id="export-json"><i class="bi bi-file-code"></i> Export as JSON</a>
-                    <a href="#" id="export-txt"><i class="bi bi-file-earmark-text"></i> Export as TXT</a>
-                </div>
-            </div>
+            <button class="btn-secondary" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
         </div>
     </header>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
-        <a href="#" id="menu-about"> About</a>
-        <a href="#" id="menu-theme"> Theme</a>
-        <a href="#" id="menu-logout"> Logout</a>
-    </div>
-
-    <!-- About Modal -->
-    <div class="modal" id="about-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="about-close">&times;</span>
-            <div class="about-content">
-                <div class="about-header">
-                    <span class="about-icon">🎬</span>
-                    <h2>Burme Transcript</h2>
-                    <p class="version">Version 1.0.0</p>
-                </div>
-                <div class="about-description">
-                    <p>A web application for movie transcript editing with SRT subtitle support.</p>
-                </div>
-                <div class="developer-info">
-                    <h3>Developer Information</h3>
-                    <div class="dev-details">
-                        <div class="dev-item">
-                            <span class="dev-label">Name:</span>
-                            <span class="dev-value">Aung Myo Kyaw</span>
-                        </div>
-                        <div class="dev-item">
-                            <span class="dev-label">Role:</span>
-                            <span class="dev-value">Full Stack Developer</span>
-                        </div>
-                        <div class="dev-item">
-                            <span class="dev-label">Phone:</span>
-                            <span class="dev-value">0967740154</span>
-                        </div>
-                        <div class="dev-item">
-                            <span class="dev-label">Email:</span>
-                            <span class="dev-value">wayne.mm.92@gmail.com</span>
-                        </div>
-                        <div class="dev-item">
-                            <span class="dev-label">Location:</span>
-                            <span class="dev-value">Naypyidaw, Myanmar</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main class="app-container">
-        <!-- Quick Upload Bar -->
+        <!-- Upload Bar -->
         <div class="upload-bar">
-            <label class="upload-zone btn-upload" for="video-input">
-                <span><i class="bi bi-film"></i> Upload Movie</span>
-            </label>
-            <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime">
-            <label class="upload-zone btn-upload" for="subtitle-input">
-                <span><i class="bi bi-file-text"></i> Upload SRT</span>
-            </label>
-            <input type="file" id="subtitle-input" accept=".srt">
+            <button class="btn-primary" onclick="document.getElementById('video-input').click()">
+                <i class="bi bi-film"></i> Upload Movie
+            </button>
+            <input type="file" id="video-input" accept="video/*" hidden>
+            <button class="btn-secondary" onclick="document.getElementById('subtitle-input').click()">
+                <i class="bi bi-file-text"></i> Upload SRT
+            </button>
+            <input type="file" id="subtitle-input" accept=".srt" hidden>
         </div>
 
-        <!-- Video Player + Editor -->
-        <section class="panel video-editor">
+        <!-- Video Section -->
+        <section class="video-section">
             <div class="video-container">
                 <video id="video-player" playsinline>
                     Your browser does not support HTML5 video.
                 </video>
-                <div class="subtitle-overlay" id="subtitle-overlay"></div>
-                <div class="video-placeholder" id="video-placeholder">
-                    <div class="placeholder-content">
-                        <i class="bi bi-film" style="font-size: 64px;"></i>
-                        <p>No video loaded</p>
-                        <p class="placeholder-hint">Click "Upload Movie" to add a video</p>
-                    </div>
+                <div class="subtitle-overlay" id="subtitle-overlay">
+                    <span class="subtitle-text"></span>
                 </div>
-                <!-- Controls Inside -->
+                <div class="video-placeholder" id="video-placeholder">
+                    <i class="bi bi-film" style="font-size: 48px;"></i>
+                    <p>No video loaded</p>
+                </div>
                 <div class="video-controls" id="video-controls">
-                    <div class="controls-row">
-                        <button class="control-btn" id="play-pause-btn" title="Play/Pause">▶</button>
-                        <button class="control-btn" id="stop-btn" title="Stop">⏹</button>
-                        <button class="control-btn" id="rewind-btn" title="Rewind 10s">⏪</button>
-                        <button class="control-btn" id="forward-btn" title="Forward 10s">⏩</button>
-                        <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1" title="Volume">
-                        <select class="speed-selector" id="speed-selector" title="Speed">
+                    <div class="progress-row">
+                        <span class="time-display" id="time-display">0:00 / 0:00</span>
+                        <div class="progress-bar" id="progress-bar">
+                            <div class="progress-played" id="progress-played"></div>
+                        </div>
+                    </div>
+                    <div class="buttons-row">
+                        <button class="control-btn" id="play-pause-btn">▶</button>
+                        <button class="control-btn" id="stop-btn">⏹</button>
+                        <button class="control-btn" id="rewind-btn">-10s</button>
+                        <button class="control-btn" id="forward-btn">+10s</button>
+                        <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1">
+                        <select class="speed-selector" id="speed-selector">
                             <option value="0.5">0.5x</option>
                             <option value="1" selected>1x</option>
                             <option value="1.5">1.5x</option>
                             <option value="2">2x</option>
                         </select>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progress-bar">
-                            <div class="progress-played" id="progress-played"></div>
-                            <div class="progress-buffered" id="progress-buffered"></div>
-                        </div>
-                        <div class="time-display" id="time-display">0:00 / 0:00</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="editor-panel">
-                <div class="editor-header">
-                    <h2>Subtitle Editor</h2>
-                    <div class="editor-controls">
-                        <button id="sync-btn" class="btn-secondary">Sync</button>
-                        <button id="add-subtitle-btn" class="btn-secondary">+ Add</button>
-                    </div>
-                </div>
-                
-                <div class="current-subtitle">
-                    <div class="timecode-inputs">
-                        <div class="time-row">
-                            <div class="time-group">
-                                <label>Start:</label>
-                                <input type="text" id="start-time" class="timecode" placeholder="00:00:00,000">
-                            </div>
-                            <div class="time-group">
-                                <label>End:</label>
-                                <input type="text" id="end-time" class="timecode" placeholder="00:00:00,000">
-                            </div>
-                        </div>
-                    </div>
-                    <textarea id="subtitle-text" placeholder="Enter subtitle text..."></textarea>
-                    <div class="subtitle-actions">
-                        <button id="save-subtitle-btn" class="btn-primary btn-sm">Save</button>
-                        <button id="style-subtitle-btn" class="btn-secondary btn-sm" title="Subtitle Style"><i class="bi bi-type"></i></button>
-                    </div>
-                </div>
-
-                <div class="offset-control">
-                    <label>Time Offset:</label>
-                    <input type="range" id="offset-slider" min="-5000" max="5000" value="0">
-                    <span id="offset-value">0ms</span>
-                </div>
-
-                <!-- Style Editor Button -->
-                <button id="style-editor-btn" class="btn-secondary" style="margin-top: 12px; width: 100%;">
-                    Style Editor
-                </button>
-
-                <!-- Style Editor Modal -->
-                <div class="modal" id="style-modal">
-                    <div class="modal-content style-modal-content">
-                        <span class="modal-close" id="style-modal-close">&times;</span>
-                        <h3> Subtitle Style Editor</h3>
-                        <div class="modal-style-options">
-                            <div class="style-row">
-                                <div class="style-group">
-                                    <label>Font</label>
-                                    <select id="subtitle-font-family">
-                                        <option value="Arial">English - Arial</option>
-                                        <option value="'Myanmar Text', 'Padauk', 'MyanmarPhyu', sans-serif">Myanmar - Myanmar Text</option>
-                                    </select>
-                                </div>
-                                <div class="style-group">
-                                    <label>Size</label>
-                                    <select id="subtitle-font-size">
-                                        <option value="14">14px</option>
-                                        <option value="16">16px</option>
-                                        <option value="18">18px</option>
-                                        <option value="20" selected>20px</option>
-                                        <option value="24">24px</option>
-                                        <option value="28">28px</option>
-                                        <option value="32">32px</option>
-                                        <option value="40">40px</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="style-row">
-                                <div class="style-group">
-                                    <label>Font Color</label>
-                                    <input type="color" id="subtitle-font-color" value="#ffffff">
-                                </div>
-                                <div class="style-group">
-                                    <label>Background</label>
-                                    <input type="color" id="subtitle-bg-color" value="#000000">
-                                </div>
-                            </div>
-                            <div class="style-row">
-                                <div class="style-group">
-                                    <label>Opacity</label>
-                                    <input type="range" id="subtitle-opacity" min="0" max="100" value="80">
-                                </div>
-                                <div class="style-group">
-                                    <label>Position</label>
-                                    <select id="subtitle-position">
-                                        <option value="bottom-center" selected>Bottom Center</option>
-                                        <option value="bottom-left">Bottom Left</option>
-                                        <option value="bottom-right">Bottom Right</option>
-                                        <option value="top-center">Top Center</option>
-                                        <option value="top-left">Top Left</option>
-                                        <option value="top-right">Top Right</option>
-                                        <option value="center-left">Center Left</option>
-                                        <option value="center-right">Center Right</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="style-row">
-                                <div class="style-group">
-                                    <label>Font Weight</label>
-                                    <select id="subtitle-font-weight">
-                                        <option value="normal" selected>Normal</option>
-                                        <option value="bold">Bold</option>
-                                    </select>
-                                </div>
-                                <div class="style-group">
-                                    <label>Outline</label>
-                                    <select id="subtitle-outline">
-                                        <option value="none" selected>None</option>
-                                        <option value="black">Black</option>
-                                        <option value="white">White</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="apply-style-btn" class="btn-primary" style="width: 100%; margin-top: 16px;">Apply Style</button>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Subtitle List (Below Video) -->
-        <aside class="panel subtitle-list">
-            <div class="panel-header">
-                <h2><i class="bi bi-list-ol"></i> Subtitles</h2>
-                <div class="subtitle-info">
-                    <span id="subtitle-count">0</span> lines
+        <!-- Editor Section -->
+        <section class="editor-section">
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <h2>Edit Subtitle</h2>
+                    <div class="editor-buttons">
+                        <button class="btn-secondary" id="sync-btn">Sync</button>
+                        <button class="btn-secondary" id="add-subtitle-btn">+ Add</button>
+                    </div>
+                </div>
+                <div class="subtitle-input-area">
+                    <div class="time-row">
+                        <div class="time-field">
+                            <label>Start</label>
+                            <input type="text" id="start-time" class="timecode" placeholder="00:00:00,000">
+                        </div>
+                        <div class="time-field">
+                            <label>End</label>
+                            <input type="text" id="end-time" class="timecode" placeholder="00:00:00,000">
+                        </div>
+                    </div>
+                    <textarea id="subtitle-text-input" class="subtitle-textarea" placeholder="Enter subtitle text..."></textarea>
+                    <button class="btn-primary" id="save-subtitle-btn">Save</button>
                 </div>
             </div>
-            
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search subtitles...">
+            <div class="subtitle-list" id="subtitle-list">
+                <div class="subtitle-item">
+                    <div class="time">00:00:00,000 --> 00:00:00,000</div>
+                    <div class="text">No subtitles loaded</div>
+                </div>
             </div>
-
-            <ul id="subtitle-items" class="subtitle-items">
-                <!-- Subtitles will be populated here -->
-            </ul>
-        </aside>
+        </section>
     </main>
 
-    <!-- Hidden file inputs for upload zones -->
-    <input type="file" id="hidden-video-input" accept="video/*" style="display:none">
-    <input type="file" id="hidden-subtitle-input" accept=".srt" multiple style="display:none">
+    <!-- Device Frame Toggle -->
+    <div class="device-frame-toggle">
+        <button onclick="toggleDeviceFrame('desktop')" class="active" id="btn-desktop">Desktop</button>
+        <button onclick="toggleDeviceFrame('tablet')" id="btn-tablet">Tablet</button>
+        <button onclick="toggleDeviceFrame('mobile')" id="btn-mobile">Mobile</button>
+    </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <script src="js/firebase-auth.js"></script>
-    <script src="js/srt-parser.js"></script>
+    <!-- Scripts -->
     <script src="js/utils.js"></script>
     <script src="js/player.js"></script>
-    <script src="js/subtitle-editor.js"></script>
+    <script src="js/srt-parser.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        function toggleDeviceFrame(device) {
+            document.body.className = '';
+            document.body.classList.add('device-' + device);
+            document.querySelectorAll('.device-frame-toggle button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + device).classList.add('active');
+        }
+    </script>
 </body>
 </html>
