@@ -18,11 +18,6 @@ const App = (function() {
     function init() {
         console.log('Initializing Burme Transcript App...');
         
-        // Debug: check upload elements exist
-        const videoZone = document.getElementById('video-upload-zone');
-        const videoInput = document.getElementById('video-input');
-        console.log('Video zone:', videoZone, 'Video input:', videoInput);
-        
         // Initialize modules
         initTheme();
         initAboutModal();
@@ -402,15 +397,7 @@ const App = (function() {
             VideoPlayer.registerControls(controlsContainer);
         }
         
-        // Set up video placeholder click to upload
-        const placeholder = document.getElementById('video-placeholder');
-        const videoUploadZone = document.getElementById('video-upload-zone');
-        if (placeholder && videoUploadZone) {
-            placeholder.addEventListener('click', () => {
-                const input = videoUploadZone.querySelector('input');
-                if (input) input.click();
-            });
-        }
+        // Video placeholder click handled in initFileUpload
     }
 
     /**
@@ -441,14 +428,10 @@ const App = (function() {
         const videoInput = document.getElementById('video-input');
         
         if (videoUploadZone && videoInput) {
-            // Debug click
             videoUploadZone.addEventListener('click', function() {
-                console.log('Video upload clicked');
                 videoInput.click();
             });
-            // File input change
             videoInput.addEventListener('change', function(e) {
-                console.log('Video input changed', e.target.files);
                 if (e.target.files && e.target.files.length > 0) {
                     handleVideoUpload(e.target.files);
                 }
