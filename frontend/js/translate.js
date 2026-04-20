@@ -380,7 +380,9 @@ const Translate = (function() {
             return;
         }
 
-        const apiKey = apiProvider === 'gemini' ? geminiApiKey.value.trim() : groqApiKey.value.trim();
+        const manualKey = apiProvider === 'gemini' ? geminiApiKey.value.trim() : groqApiKey.value.trim();
+        // Use manual key or env var
+        const apiKey = manualKey || (apiProvider === 'gemini' ? (window.GEMINI_API_KEY || '') : (window.GROQ_API_KEY || ''));
         if (!apiKey) {
             alert('Please enter your API key');
             return;
