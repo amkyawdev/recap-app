@@ -662,3 +662,6 @@ const VideoPlayer = (function() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = VideoPlayer;
 }
+
+// Make globally available
+window.VideoPlayer = VideoPlayer;

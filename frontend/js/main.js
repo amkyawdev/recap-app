@@ -802,3 +802,6 @@ const App = (function() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = App;
 }
+
+// Make globally available
+window.App = App;
