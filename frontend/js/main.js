@@ -18,6 +18,11 @@ const App = (function() {
     function init() {
         console.log('Initializing Burme Transcript App...');
         
+        // Debug: check upload elements exist
+        const videoZone = document.getElementById('video-upload-zone');
+        const videoInput = document.getElementById('video-input');
+        console.log('Video zone:', videoZone, 'Video input:', videoInput);
+        
         // Initialize modules
         initTheme();
         initAboutModal();
