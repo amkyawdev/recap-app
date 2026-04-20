@@ -23,8 +23,8 @@
             display: flex;
             flex-direction: column;
             height: calc(100vh - 64px);
-            padding: 16px;
-            gap: 16px;
+            padding: 12px;
+            gap: 12px;
         }
         .panel.video-editor {
             flex: 3;
@@ -36,9 +36,9 @@
         }
         .upload-bar {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
@@ -46,7 +46,7 @@
         .upload-bar .upload-zone {
             flex: 1;
             max-width: 280px;
-            padding: 20px 32px;
+            padding: 16px 20px;
             background: var(--bg-tertiary);
             border: 2px dashed var(--border-color);
             border-radius: var(--radius);
@@ -66,7 +66,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
         }
         .panel {
@@ -77,6 +77,50 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 8px;
+                gap: 8px;
+            }
+            .upload-bar {
+                flex-direction: row;
+                gap: 8px;
+                padding: 10px;
+            }
+            .upload-bar .upload-zone {
+                padding: 12px 16px;
+                max-width: none;
+            }
+            .upload-bar .upload-zone span {
+                font-size: 13px;
+                gap: 6px;
+            }
+            .panel.video-editor {
+                flex: 2;
+                min-height: 200px;
+            }
+            .panel.subtitle-list {
+                flex: 1;
+                min-height: 120px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .app-header {
+                padding: 8px 12px;
+            }
+            .header-left .logo h1 {
+                font-size: 16px;
+            }
+            .upload-bar {
+                flex-direction: column;
+            }
+            .upload-bar .upload-zone {
+                padding: 14px;
+            }
         }
     </style>
 </head>
