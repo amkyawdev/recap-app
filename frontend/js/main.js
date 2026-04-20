@@ -436,7 +436,16 @@ const App = (function() {
         const videoInput = document.getElementById('video-input');
         
         if (videoUploadZone && videoInput) {
-            setupUploadZone(videoUploadZone, videoInput, handleVideoUpload);
+            // Direct click to trigger file input
+            videoUploadZone.addEventListener('click', function() {
+                videoInput.click();
+            });
+            // File input change
+            videoInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleVideoUpload(e.target.files);
+                }
+            });
         }
         
         // Subtitle upload
@@ -444,23 +453,13 @@ const App = (function() {
         const subtitleInput = document.getElementById('subtitle-input');
         
         if (subtitleUploadZone && subtitleInput) {
-            setupUploadZone(subtitleUploadZone, subtitleInput, handleSubtitleUpload);
-        }
-        
-        // Hidden inputs
-        const hiddenVideoInput = document.getElementById('hidden-video-input');
-        const hiddenSubtitleInput = document.getElementById('hidden-subtitle-input');
-        
-        const addFilesBtn = document.getElementById('add-files-btn');
-        if (addFilesBtn) {
-            addFilesBtn.addEventListener('click', () => {
-                hiddenSubtitleInput?.click();
+            subtitleUploadZone.addEventListener('click', function() {
+                subtitleInput.click();
             });
-        }
-        
-        if (hiddenSubtitleInput) {
-            hiddenSubtitleInput.addEventListener('change', (e) => {
-                handleSubtitleUpload(e.target.files);
+            subtitleInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleSubtitleUpload(e.target.files);
+                }
             });
         }
     }
