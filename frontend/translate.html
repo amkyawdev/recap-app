@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translate - Burme Transcript</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/translate.css">
+    <!-- Myanmar Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Myanmar+Text&family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-left">
+            <a href="index.html" class="back-btn" title="Back to Editor">
+                <span>←</span>
+            </a>
+            <div class="logo">
+                <span class="logo-icon">🌐</span>
+                <h1>Translate</h1>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="about-btn" class="btn-icon btn-sm-icon" title="About">👋</button>
+            <button id="theme-toggle" class="btn-icon btn-sm-icon" title="Toggle Theme">🌙</button>
+            <button id="logout-btn" class="btn-icon btn-sm-icon" title="Logout">🔑</button>
+        </div>
+    </header>
+
+    <main class="translate-container">
+        <!-- Upload Section -->
+        <div class="translate-upload-section">
+            <div class="upload-grid">
+                <!-- Video Upload -->
+                <div class="upload-card">
+                    <h3>📹 Video File</h3>
+                    <div class="upload-zone" id="video-upload-zone">
+                        <span class="upload-icon">🎬</span>
+                        <span>Drop video here or click to upload</span>
+                        <span class="upload-hint">MP4, WebM, MOV</span>
+                        <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime">
+                    </div>
+                    <div class="file-info" id="video-file-info">
+                        <span class="filename"></span>
+                        <span class="filesize"></span>
+                    </div>
+                </div>
+
+                <!-- SRT Upload -->
+                <div class="upload-card">
+                    <h3>📄 Subtitle File (SRT)</h3>
+                    <div class="upload-zone" id="subtitle-upload-zone">
+                        <span class="upload-icon">📝</span>
+                        <span>Drop SRT here or click to upload</span>
+                        <span class="upload-hint">.srt files only</span>
+                        <input type="file" id="subtitle-input" accept=".srt">
+                    </div>
+                    <div class="file-info" id="subtitle-file-info">
+                        <span class="filename"></span>
+                        <span class="filesize"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="translate-settings">
+            <div class="settings-grid">
+                <!-- Language Selection -->
+                <div class="settings-card">
+                    <h3>🌍 Languages</h3>
+                    <div class="language-selectors">
+                        <div class="language-group">
+                            <label>From:</label>
+                            <select id="source-language">
+                                <option value="auto">Auto Detect</option>
+                                <option value="en">English</option>
+                                <option value="my">Myanmar (Burmese)</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ko">Korean</option>
+                                <option value="th">Thai</option>
+                                <option value="vi">Vietnamese</option>
+                                <option value="lo">Lao</option>
+                                <option value="km">Khmer</option>
+                            </select>
+                        </div>
+                        <div class="language-arrow">→</div>
+                        <div class="language-group">
+                            <label>To:</label>
+                            <select id="target-language">
+                                <option value="my" selected>Myanmar (Burmese)</option>
+                                <option value="en">English</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ko">Korean</option>
+                                <option value="th">Thai</option>
+                                <option value="vi">Vietnamese</option>
+                                <option value="lo">Lao</option>
+                                <option value="km">Khmer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Selection -->
+                <div class="settings-card">
+                    <h3>🔑 Translation API</h3>
+                    <div class="api-selector">
+                        <label>
+                            <input type="radio" name="api-provider" value="gemini" checked>
+                            <span>Google Gemini</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="api-provider" value="groq">
+                            <span>Groq (Llama)</span>
+                        </label>
+                    </div>
+                    
+                    <div class="api-key-input" id="gemini-key-section">
+                        <label>Gemini API Key:</label>
+                        <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API key">
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="api-link">Get Gemini Key</a>
+                    </div>
+                    
+                    <div class="api-key-input" id="groq-key-section" style="display: none;">
+                        <label>Groq API Key:</label>
+                        <input type="password" id="groq-api-key" placeholder="Enter your Groq API key">
+                        <a href="https://console.groq.com/keys" target="_blank" class="api-link">Get Groq Key</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Translate Button -->
+            <div class="translate-actions">
+                <button id="translate-btn" class="btn-primary btn-lg" disabled>
+                    <span class="btn-icon">⚡</span>
+                    Translate Subtitles
+                </button>
+                <button id="clear-btn" class="btn-secondary btn-lg">
+                    Clear All
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="translate-progress" id="translate-progress" style="display: none;">
+            <div class="progress-info">
+                <span id="progress-text">Translating...</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            <div class="progress-details">
+                <span id="current-subtitle"></span>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="translate-results" id="translate-results" style="display: none;">
+            <div class="results-header">
+                <h3>📋 Translation Results</h3>
+                <div class="results-actions">
+                    <button id="export-srt-btn" class="btn-primary btn-sm">📄 Export SRT</button>
+                    <button id="export-json-btn" class="btn-secondary btn-sm">📋 Export JSON</button>
+                    <button id="save-firebase-btn" class="btn-secondary btn-sm">🔥 Save to Firebase</button>
+                </div>
+            </div>
+            
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Lines:</span>
+                    <span class="stat-value" id="total-lines">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Translated:</span>
+                    <span class="stat-value" id="translated-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">API Used:</span>
+                    <span class="stat-value" id="api-used">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time Taken:</span>
+                    <span class="stat-value" id="time-taken">-</span>
+                </div>
+            </div>
+
+            <!-- Video Player Preview -->
+            <div class="video-preview" id="video-preview-section" style="display: none;">
+                <video id="video-player" playsinline controls></video>
+                <div class="subtitle-overlay" id="subtitle-overlay"></div>
+            </div>
+
+            <!-- Subtitle List -->
+            <div class="subtitle-comparison" id="subtitle-comparison">
+                <div class="subtitle-headers">
+                    <div class="subtitle-header-col">#</div>
+                    <div class="subtitle-header-col time-col">Time</div>
+                    <div class="subtitle-header-col">Original</div>
+                    <div class="subtitle-header-col">Translated</div>
+                </div>
+                <div class="subtitle-rows" id="subtitle-rows">
+                    <!-- Subtitles will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="hidden-video-input" accept="video/*" style="display:none">
+    <input type="file" id="hidden-subtitle-input" accept=".srt" style="display:none">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase-auth.js"></script>
+    <script src="js/srt-parser.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/translate.js"></script>
+</body>
+</html>
