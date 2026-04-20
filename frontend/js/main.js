@@ -423,14 +423,9 @@ const App = (function() {
      * Initialize file upload
      */
     function initFileUpload() {
-        // Video upload
-        const videoUploadZone = document.getElementById('video-upload-zone');
+        // Video input - using label for attribute
         const videoInput = document.getElementById('video-input');
-        
-        if (videoUploadZone && videoInput) {
-            videoUploadZone.addEventListener('click', function() {
-                videoInput.click();
-            });
+        if (videoInput) {
             videoInput.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files.length > 0) {
                     handleVideoUpload(e.target.files);
@@ -438,14 +433,9 @@ const App = (function() {
             });
         }
         
-        // Subtitle upload
-        const subtitleUploadZone = document.getElementById('subtitle-upload-zone');
+        // Subtitle input
         const subtitleInput = document.getElementById('subtitle-input');
-        
-        if (subtitleUploadZone && subtitleInput) {
-            subtitleUploadZone.addEventListener('click', function() {
-                subtitleInput.click();
-            });
+        if (subtitleInput) {
             subtitleInput.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files.length > 0) {
                     handleSubtitleUpload(e.target.files);

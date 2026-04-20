@@ -275,14 +275,14 @@
     <main class="app-container">
         <!-- Quick Upload Bar -->
         <div class="upload-bar">
-            <div class="upload-zone" id="video-upload-zone">
+            <label class="upload-zone btn-upload" for="video-input">
                 <span><i class="bi bi-film"></i> Upload Movie</span>
-            </div>
-            <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime" style="display:none">
-            <div class="upload-zone" id="subtitle-upload-zone">
+            </label>
+            <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime">
+            <label class="upload-zone btn-upload" for="subtitle-input">
                 <span><i class="bi bi-file-text"></i> Upload SRT</span>
-            </div>
-            <input type="file" id="subtitle-input" accept=".srt" style="display:none">
+            </label>
+            <input type="file" id="subtitle-input" accept=".srt">
         </div>
 
         <!-- Video Player + Editor -->
