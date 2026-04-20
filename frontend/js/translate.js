@@ -158,23 +158,123 @@ const Translate = (function() {
         const file = e.target.files[0];
         if (!file) return;
 
-        if (!file.name.toLowerCase().endsWith('.srt')) {
-            alert('Please upload a valid SRT file');
-            return;
-        }
-
+        const fileName = file.name.toLowerCase();
+        let text = '';
+        
         currentSRTFile = file;
         displayFileInfo(file, subtitleFileInfo);
         subtitleFileInfo.style.display = 'block';
         
-        // Parse SRT
         const reader = new FileReader();
         reader.onload = function(e) {
-            subtitles = SRTParser.parseSRT(e.target.result);
-            console.log(`Loaded ${subtitles.length} subtitles`);
-            updateTranslateButton();
+            try {
+                if (fileName.endsWith('.srt')) {
+                    subtitles = SRTParser.parseSRT(e.target.result);
+                } else if (fileName.endsWith('.vtt')) {
+                    subtitles = parseVTT(e.target.result);
+                } else if (fileName.endsWith('.json')) {
+                    subtitles = parseJSON(e.target.result);
+                } else {
+                    subtitles = parseTXT(e.target.result);
+                }
+                console.log(`Loaded ${subtitles.length} subtitles`);
+                updateTranslateButton();
+            } catch (err) {
+                console.error('Parse error:', err);
+                alert('Error parsing file: ' + err.message);
+            }
         };
         reader.readAsText(file);
+    }
+    
+    /**
+     * Parse VTT file
+     */
+    function parseVTT(content) {
+        const subs = [];
+        const blocks = content.split('\n\n').filter(b => b.trim());
+        
+        for (let i = 0; i < blocks.length; i++) {
+            const block = blocks[i].trim();
+            if (block.startsWith('WEBVTT')) continue;
+            
+            const lines = block.split('\n');
+            let timecodeLine = lines.find(l => l.includes('-->'));
+            if (!timecodeLine) continue;
+            
+            const textLines = lines.slice(lines.indexOf(timecodeLine) + 1);
+            const text = textLines.join(' ');
+            
+            const times = parseVTTTimecode(timecodeLine);
+            if (times) {
+                subs.push({
+                    id: subs.length + 1,
+                    startTime: times.start,
+                    endTime: times.end,
+                    startTimecode: formatTimecode(times.start),
+                    endTimecode: formatTimecode(times.end),
+                    text: text,
+                    originalText: text
+                });
+            }
+        }
+        return subs;
+    }
+    
+    function parseVTTTimecode(str) {
+        const match = str.match(/(\d{2}:\d{2}:\d{2})\.(\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2})\.(\d{3})/);
+        if (!match) return null;
+        
+        return {
+            start: parseTime(match[1], parseInt(match[2])),
+            end: parseTime(match[3], parseInt(match[4]))
+        };
+    }
+    
+    /**
+     * Parse JSON file
+     */
+    function parseJSON(content) {
+        const data = JSON.parse(content);
+        const subs = [];
+        
+        if (Array.isArray(data)) {
+            data.forEach((item, i) => {
+                subs.push({
+                    id: i + 1,
+                    startTime: item.startTime || item.start || i * 3000,
+                    endTime: item.endTime || item.end || (i + 1) * 3000,
+                    startTimecode: formatTimecode(item.startTime || item.start || i * 3000),
+                    endTimecode: formatTimecode(item.endTime || item.end || (i + 1) * 3000),
+                    text: item.text || item.subtitle || item.content || '',
+                    originalText: item.text || item.subtitle || item.content || ''
+                });
+            });
+        }
+        
+        return subs;
+    }
+    
+    /**
+     * Parse plain TXT (one line per subtitle)
+     */
+    function parseTXT(content) {
+        const lines = content.split('\n').filter(l => l.trim());
+        const subs = [];
+        
+        lines.forEach((line, i) => {
+            subs.push({
+                id: i + 1,
+                startTime: i * 3000,
+                endTime: (i + 1) * 3000,
+                startTimecode: formatTimecode(i * 3000),
+                endTimecode: formatTimecode((i + 1) * 3000),
+                text: line.trim(),
+                originalText: line.trim()
+            });
+        });
+        
+        return subs;
     }
 
     /**
